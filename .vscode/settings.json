@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "editor.fontSize": 17,
+  "editor.fontFamily": "Cascadia Code",
+  "terminal.integrated.fontSize": 18
+}
