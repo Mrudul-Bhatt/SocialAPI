@@ -1,6 +1,12 @@
 {
-  "editor.formatOnSave": true,
-  "editor.fontSize": 17,
-  "editor.fontFamily": "Cascadia Code",
-  "terminal.integrated.fontSize": 18
+	"editor.formatOnSave": true,
+	"editor.fontSize": 18,
+	"editor.fontFamily": "Consolas, 'Courier New', Monospace",
+	"terminal.integrated.fontSize": 18,
+	"omnisharp.enableAsyncCompletion": true,
+	"omnisharp.enableImportCompletion": true,
+	"files.exclude": {
+		"**/bin": true,
+		"**/obj": true
+	}
 }
