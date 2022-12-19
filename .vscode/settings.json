@@ -8,5 +8,6 @@
 	"files.exclude": {
 		"**/bin": true,
 		"**/obj": true
-	}
+	},
+	"editor.bracketPairColorization.enabled": false
 }

@@ -6,6 +6,7 @@ using SocialAPI.Models;
 
 namespace SocialAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : Controller

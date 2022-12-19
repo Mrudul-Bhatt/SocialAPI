@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialAPI.Data;
 using SocialAPI.DTOs;
 using SocialAPI.Interfaces;
 using SocialAPI.Models;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace SocialAPI.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
@@ -25,12 +27,15 @@ namespace SocialAPI.Controllers
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
 
+            //using is used if we want this variable to be disposed of after it's done being used
+            //this creates a new instance of the HMACSHA512 class with a random key
             using var hmac = new HMACSHA512();
 
             var user = new AppUser()
             {
                 UserName = registerDto.UserName.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+                //this key is used to verify the password hash during login 
                 PasswordSalt = hmac.Key
             };
 

@@ -1,14 +1,15 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using SocialAPI.Interfaces;
-using SocialAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using SocialAPI.Interfaces;
+using SocialAPI.Models;
 
 namespace SocialAPI.Services
 {
     public class TokenService : ITokenService
     {
+        //when we use same key to encrypt and decrypt the token, it's called symmetric encryption
         private readonly SymmetricSecurityKey _key;
 
         public TokenService(IConfiguration config)
