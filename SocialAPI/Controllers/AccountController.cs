@@ -11,6 +11,8 @@ using SocialAPI.Models;
 namespace SocialAPI.Controllers
 {
     [AllowAnonymous]
+    [ApiController]
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
@@ -22,8 +24,9 @@ namespace SocialAPI.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
 
@@ -49,18 +52,24 @@ namespace SocialAPI.Controllers
             };
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<UserDto>> Login([FromBody] LoginDto loginDto)
         {
             var user = await _db.AppUsers.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
 
-            if (user == null) return Unauthorized("Invalid credentials");
+            if (user == null) return Unauthorized("Invalid username");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
 
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-            if (computedHash != user.PasswordHash) return Unauthorized("Invalid credentials");
+            //if (computedHash != user.PasswordHash) return Unauthorized("Invalid credentials");
+
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
+            }
 
             return new UserDto
             {

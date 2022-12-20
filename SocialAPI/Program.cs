@@ -1,10 +1,11 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SocialAPI.Data;
 using SocialAPI.Interfaces;
+using SocialAPI.Middleware;
 using SocialAPI.Services;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +31,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
