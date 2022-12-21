@@ -1,7 +1,7 @@
 {
 	"editor.formatOnSave": true,
 	"editor.fontSize": 18,
-	"editor.fontFamily": "Consolas, 'Courier New', Monospace",
+	"editor.fontFamily": "Ubuntu Mono",
 	"terminal.integrated.fontSize": 18,
 	"omnisharp.enableAsyncCompletion": true,
 	"omnisharp.enableImportCompletion": true,

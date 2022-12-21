@@ -7,6 +7,7 @@ using SocialAPI.Models;
 namespace SocialAPI.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class ErrorController : Controller
 {
     private readonly AppDbContext _db;
