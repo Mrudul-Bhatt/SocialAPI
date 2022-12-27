@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SocialAPI.Data;
+using SocialAPI.DTOs;
+using SocialAPI.Interfaces;
 using SocialAPI.Models;
 
 namespace SocialAPI.Controllers
@@ -11,27 +12,30 @@ namespace SocialAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(AppDbContext dbContext)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _db = dbContext;
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _db.AppUsers.ToListAsync();
-            return users;
+            var users = await _userRepository.GetUsersAsync();
+            var usersDto = _mapper.Map<IEnumerable<MemberDto>>(users);
+            return Ok(usersDto);
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        public async Task<ActionResult<MemberDto>> GetUser(int id)
         {
-            var user = await _db.AppUsers.FindAsync(id);
-            return user;
+            var user = await _userRepository.GetUserByIdAsync(id);
+            var userDto = _mapper.Map<MemberDto>(user);
+            return Ok(userDto);
         }
-
     }
 }
