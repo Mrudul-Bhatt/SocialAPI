@@ -1,8 +1,8 @@
 {
 	"editor.formatOnSave": true,
-	"editor.fontSize": 14,
+	"editor.fontSize": 15,
 	"editor.fontFamily": "Source Code Pro",
-	"terminal.integrated.fontSize": 15,
+	"terminal.integrated.fontSize": 14,
 	"omnisharp.enableAsyncCompletion": true,
 	"omnisharp.enableImportCompletion": true,
 	"files.exclude": {

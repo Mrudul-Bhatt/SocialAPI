@@ -1,5 +1,8 @@
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using SocialAPI.DTOs;
 using SocialAPI.Interfaces;
 using SocialAPI.Models;
 
@@ -8,8 +11,11 @@ namespace SocialAPI.Data
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
-        public UserRepository(AppDbContext context)
+        private readonly IMapper _mapper;
+
+        public UserRepository(AppDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -42,6 +48,21 @@ namespace SocialAPI.Data
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            return await _context.AppUsers
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<MemberDto?> GetMemberAsync(string username)
+        {
+            return await _context.AppUsers
+                .Where(x => x.UserName == username)
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
         }
     }
 }
